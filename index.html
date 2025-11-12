@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Etiquetas CSV</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .preview-table {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .badge-count {
+            background-color: #28a745;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <h1 class="text-white text-center mb-0">
+                <i class="fas fa-tags me-2"></i>Gerador de Etiquetas CSV
+            </h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-edit me-2"></i>Dados da Nota Fiscal
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Empresa</label>
+                        <input type="text" class="form-control" id="empresa" placeholder="Nome da empresa">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Número da NF <small class="text-muted">(9 dígitos)</small></label>
+                        <input type="text" class="form-control" id="numeroNF" placeholder="Ex: 123456789" maxlength="9">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Série <small class="text-muted">(3 caracteres)</small></label>
+                        <input type="text" class="form-control" id="serie" placeholder="Ex: ABC" maxlength="3">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Data da Entrega</label>
+                        <input type="date" class="form-control" id="dataEntrega">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo da Etiqueta</label>
+                        <input type="text" class="form-control" id="tipoEtiqueta" placeholder="Ex: A4">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Fornecedor</label>
+                        <input type="text" class="form-control" id="fornecedor" placeholder="Nome do fornecedor">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Destino</label>
+                        <input type="text" class="form-control" id="destino" placeholder="Local de destino">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Informações Adicionais</label>
+                        <input type="text" class="form-control" id="infoAdicionais" placeholder="Informações extras">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-box me-2"></i>Dados do Item
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Item (Código) <small class="text-muted">(Máx 21 caracteres)</small></label>
+                        <input type="text" class="form-control" id="item" placeholder="Ex: PROD001" maxlength="21">
+                    </div>
+                    <div class="col-md-9">
+                        <label class="form-label">Descrição do Item</label>
+                        <input type="text" class="form-control" id="descricao" placeholder="Descrição completa do item">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Quantidade Total <small class="text-muted">(9 int + 3 dec)</small></label>
+                        <input type="text" class="form-control" id="quantidade" placeholder="Ex: 100.500" pattern="[0-9]+\.?[0-9]*">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Qtd por Embalagem <small class="text-muted">(9 int + 3 dec)</small></label>
+                        <input type="text" class="form-control" id="qtdEmbalagem" placeholder="Ex: 10.000" pattern="[0-9]+\.?[0-9]*">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Unidade de Medida <small class="text-muted">(2 caracteres)</small></label>
+                        <input type="text" class="form-control" id="unidadeMedida" placeholder="Ex: UN, KG" maxlength="2" style="text-transform: uppercase;">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Embalagem</label>
+                        <input type="text" class="form-control" id="embalagem" placeholder="Ex: Caixa, Pallet">
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button class="btn btn-primary btn-lg" onclick="adicionarItem()">
+                            <i class="fas fa-plus-circle me-2"></i>Adicionar Item
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="previewCard">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-list me-2"></i>Prévia dos Itens</span>
+                <span class="badge badge-count" id="totalItens">0 itens</span>
+            </div>
+            <div class="card-body">
+                <div class="preview-table" id="tabelaContainer" style="display: none;">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Empresa</th>
+                                <th>NF</th>
+                                <th>Série</th>
+                                <th>Data</th>
+                                <th>Item</th>
+                                <th>Descrição</th>
+                                <th>Quantidade</th>
+                                <th>Unidade</th>
+                                <th>Embalagem</th>
+                                <th>Volume</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaItens"></tbody>
+                    </table>
+                </div>
+                <div id="mensagemVazia" class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-3x mb-3"></i>
+                    <p>Nenhum item adicionado ainda. Preencha os campos acima e clique em "Adicionar Item".</p>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-success btn-lg me-2" onclick="gerarCSV()">
+                        <i class="fas fa-download me-2"></i>Gerar CSV
+                    </button>
+                    <button class="btn btn-outline-danger btn-lg" onclick="limparTodos()">
+                        <i class="fas fa-trash me-2"></i>Limpar Todos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let itens = [];
+
+        // Máscaras para os campos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Máscara para Número da NF (apenas números, máx 9)
+            document.getElementById('numeroNF').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 9) value = value.substring(0, 9);
+                e.target.value = value;
+            });
+
+            // Máscara para Série (alfanumérico, máx 3, maiúsculas)
+            document.getElementById('serie').addEventListener('input', function(e) {
+                let value = e.target.value.toUpperCase();
+                if (value.length > 3) value = value.substring(0, 3);
+                e.target.value = value;
+            });
+
+            // Máscara para Item (alfanumérico, máx 21, maiúsculas)
+            document.getElementById('item').addEventListener('input', function(e) {
+                let value = e.target.value.toUpperCase();
+                if (value.length > 21) value = value.substring(0, 21);
+                e.target.value = value;
+            });
+
+            // Máscara para Quantidade (999999999.333)
+            function mascaraQuantidade(input) {
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/[^\d.,]/g, '');
+                    value = value.replace(',', '.');
+                    
+                    // Verifica se tem ponto decimal
+                    if (value.includes('.')) {
+                        let partes = value.split('.');
+                        // Limita inteiros a 9 dígitos
+                        if (partes[0].length > 9) partes[0] = partes[0].substring(0, 9);
+                        // Limita decimais a 3 dígitos
+                        if (partes[1] && partes[1].length > 3) partes[1] = partes[1].substring(0, 3);
+                        value = partes[0] + '.' + (partes[1] || '');
+                    } else {
+                        // Limita a 9 dígitos se não tem decimal
+                        if (value.length > 9) value = value.substring(0, 9);
+                    }
+                    
+                    e.target.value = value;
+                });
+
+                // Formatação ao sair do campo
+                input.addEventListener('blur', function(e) {
+                    if (e.target.value && !isNaN(parseFloat(e.target.value))) {
+                        let num = parseFloat(e.target.value);
+                        if (num > 999999999.999) {
+                            e.target.value = '999999999.999';
+                        }
+                    }
+                });
+            }
+
+            mascaraQuantidade(document.getElementById('quantidade'));
+            mascaraQuantidade(document.getElementById('qtdEmbalagem'));
+
+            // Máscara para Unidade de Medida (2 caracteres, maiúsculas)
+            document.getElementById('unidadeMedida').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase();
+                if (value.length > 2) value = value.substring(0, 2);
+                e.target.value = value;
+            });
+        });
+
+        function adicionarItem() {
+            const empresa = document.getElementById('empresa').value;
+            const numeroNF = document.getElementById('numeroNF').value;
+            const serie = document.getElementById('serie').value;
+            const dataEntrega = document.getElementById('dataEntrega').value;
+            const tipoEtiqueta = document.getElementById('tipoEtiqueta').value;
+            const fornecedor = document.getElementById('fornecedor').value;
+            const destino = document.getElementById('destino').value;
+            const infoAdicionais = document.getElementById('infoAdicionais').value;
+            const item = document.getElementById('item').value;
+            const descricao = document.getElementById('descricao').value;
+            const quantidadeTotal = parseFloat(document.getElementById('quantidade').value.replace(',', '.'));
+            const qtdEmbalagem = parseFloat(document.getElementById('qtdEmbalagem').value.replace(',', '.'));
+            const unidadeMedida = document.getElementById('unidadeMedida').value.toUpperCase();
+            const embalagem = document.getElementById('embalagem').value;
+
+            // Validações
+            if (!empresa || !numeroNF || !item || !descricao || !quantidadeTotal || !qtdEmbalagem) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            // Validar Número NF (9 dígitos numéricos)
+            if (!/^\d{1,9}$/.test(numeroNF)) {
+                alert('Número da NF deve conter até 9 dígitos numéricos!');
+                return;
+            }
+
+            // Validar Série (3 caracteres alfanuméricos)
+            if (serie && serie.length > 3) {
+                alert('Série deve ter no máximo 3 caracteres!');
+                return;
+            }
+
+            // Validar Item (21 caracteres alfanuméricos)
+            if (item.length > 21) {
+                alert('Item deve ter no máximo 21 caracteres!');
+                return;
+            }
+
+            // Validar Quantidade (9 inteiros + 3 decimais)
+            if (quantidadeTotal > 999999999.999) {
+                alert('Quantidade total deve ter no máximo 9 dígitos inteiros e 3 decimais!');
+                return;
+            }
+
+            if (qtdEmbalagem > 999999999.999) {
+                alert('Quantidade por embalagem deve ter no máximo 9 dígitos inteiros e 3 decimais!');
+                return;
+            }
+
+            // Validar Unidade de Medida (2 caracteres)
+            if (unidadeMedida.length > 2) {
+                alert('Unidade de Medida deve ter exatamente 2 caracteres!');
+                return;
+            }
+
+            // Formatar NF com padding de zeros à esquerda
+            const nfFormatado = numeroNF.padStart(9, '0');
+            const serieFormatado = serie.padEnd(3, ' ');
+
+            const numEmbalagens = Math.ceil(quantidadeTotal / qtdEmbalagem);
+            let quantidadeRestante = quantidadeTotal;
+            let volume = "Palett"
+
+            for (let i = 0; i < numEmbalagens; i++) {
+                const qtdNaEmbalagem = Math.min(qtdEmbalagem, quantidadeRestante);
+                
+                itens.push({
+                    empresa,
+                    numeroNF: nfFormatado,
+                    serie: serieFormatado,
+                    dataEntrega,
+                    tipoEtiqueta,
+                    item: item.padEnd(21, ' '),
+                    descricao,
+                    quantidade: qtdNaEmbalagem.toFixed(3),
+                    unidadeMedida: unidadeMedida.padEnd(2, ' '),
+                    embalagem,
+                    fornecedor,
+                    destino,
+                    infoAdicionais,
+                    volume
+                    
+                });
+
+                quantidadeRestante -= qtdEmbalagem;
+                volume =  ` ${i+1} / ${numEmbalagens - 1}`
+            }
+
+            atualizarTabela();
+            limparCamposItem();
+        }
+
+        function limparCamposItem() {
+            document.getElementById('item').value = '';
+            document.getElementById('descricao').value = '';
+            document.getElementById('quantidade').value = '';
+            document.getElementById('qtdEmbalagem').value = '';
+            document.getElementById('unidadeMedida').value = '';
+            document.getElementById('embalagem').value = '';
+        }
+
+        function atualizarTabela() {
+            const tabela = document.getElementById('tabelaItens');
+            tabela.innerHTML = '';
+
+            itens.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.empresa}</td>
+                    <td>${item.numeroNF}</td>
+                    <td>${item.serie}</td>
+                    <td>${item.dataEntrega}</td>
+                    <td>${item.item}</td>
+                    <td>${item.descricao}</td>
+                    <td>${item.quantidade}</td>
+                    <td>${item.unidadeMedida}</td>
+                    <td>${item.embalagem}</td>
+                    <td>${item.volume}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="removerItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tabela.appendChild(tr);
+            });
+
+            if (itens.length > 0) {
+                document.getElementById('tabelaContainer').style.display = 'block';
+                document.getElementById('mensagemVazia').style.display = 'none';
+            } else {
+                document.getElementById('tabelaContainer').style.display = 'none';
+                document.getElementById('mensagemVazia').style.display = 'block';
+            }
+
+            document.getElementById('totalItens').textContent = `${itens.length} ${itens.length === 1 ? 'item' : 'itens'}`;
+        }
+
+        function removerItem(index) {
+            itens.splice(index, 1);
+            atualizarTabela();
+        }
+
+        function limparTodos() {
+            if (confirm('Deseja realmente limpar todos os itens?')) {
+                itens = [];
+                atualizarTabela();
+            }
+        }
+
+        function gerarCSV() {
+            if (itens.length === 0) {
+                alert('Adicione pelo menos um item antes de gerar o CSV!');
+                return;
+            }
+
+            let csv = 'Empresa,Nota Fiscal,Série,Data Entrega,Tipo Etiqueta,Item,Descrição,Quantidade,Unidade Medida,Embalagem,Fornecedor,Destino,Informações Adicionais\n';
+
+            itens.forEach(item => {
+                csv += `"${item.empresa}","${item.numeroNF}","${item.serie}","${item.dataEntrega}","${item.tipoEtiqueta}","${item.item}","${item.descricao}","${item.quantidade}","${item.unidadeMedida}","${item.embalagem}","${item.fornecedor}","${item.destino}","${item.infoAdicionais}", "${item.volume}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `etiquetas_${Date.now()}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
