@@ -320,10 +320,34 @@
 
             const numEmbalagens = Math.ceil(quantidadeTotal / qtdEmbalagem);
             let quantidadeRestante = quantidadeTotal;
-            let volume = "Palett"
+            let volume = "Palett";
 
+             itens.push({
+                    empresa,
+                    numeroNF: nfFormatado,
+                    serie: serieFormatado,
+                    dataEntrega,
+                    tipoEtiqueta,
+                    item: item.padEnd(21, ' '),
+                    descricao,
+                    quantidade: quantidadeTotal.toFixed(3),
+                    unidadeMedida: unidadeMedida.padEnd(2, ' '),
+                    embalagem,
+                    fornecedor,
+                    destino,
+                    infoAdicionais,
+                    volume
+                    
+                });
+
+
+
+            
             for (let i = 0; i < numEmbalagens; i++) {
                 const qtdNaEmbalagem = Math.min(qtdEmbalagem, quantidadeRestante);
+
+                 volume =  ` ${i+1} / ${numEmbalagens}`
+                
                 
                 itens.push({
                     empresa,
@@ -344,7 +368,7 @@
                 });
 
                 quantidadeRestante -= qtdEmbalagem;
-                volume =  ` ${i+1} / ${numEmbalagens - 1}`
+               
             }
 
             atualizarTabela();
@@ -366,7 +390,30 @@
 
             itens.forEach((item, index) => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
+              
+                if(item.quantidade < 9){
+                      console.log(item.quantidade);
+                     tr.innerHTML = `
+                    <td>${item.empresa}</td>
+                    <td>${item.numeroNF}</td>
+                    <td>${item.serie}</td>
+                    <td>${item.dataEntrega}</td>
+                    <td>${item.item}</td>
+                    <td>${item.descricao}</td>
+                    <td>${"0"+item.quantidade}</td>
+                    <td>${item.unidadeMedida}</td>
+                    <td>${item.embalagem}</td>
+                    <td>${item.volume}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="removerItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                     `;
+                    tabela.appendChild(tr);
+                }
+                else{
+                      tr.innerHTML = `
                     <td>${item.empresa}</td>
                     <td>${item.numeroNF}</td>
                     <td>${item.serie}</td>
@@ -384,6 +431,9 @@
                     </td>
                 `;
                 tabela.appendChild(tr);
+            }
+
+              
             });
 
             if (itens.length > 0) {
