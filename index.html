@@ -256,6 +256,15 @@
                 if (value.length > 2) value = value.substring(0, 2);
                 e.target.value = value;
             });
+
+            // Máscara para Etiqueta (2 caracteres, maiúsculas)
+            document.getElementById('tipoEtiqueta').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^A-Za-z]/g, '').toUpperCase();
+                if (value.length > 2) value = value.substring(0, 2);
+                e.target.value = value;
+            });
+    
+            
         });
 
         function adicionarItem() {
