@@ -322,7 +322,7 @@
             const numEmbalagens = Math.ceil(quantidadeTotal / qtdEmbalagem);
             let quantidadeRestante = quantidadeTotal;
             let volume = "Palett";
-
+            
              itens.push({
                     empresa,
                     numeroNF: nfFormatado,
@@ -348,14 +348,14 @@
                 const qtdNaEmbalagem = Math.min(qtdEmbalagem, quantidadeRestante);
 
                  volume =  ` ${i+1} / ${numEmbalagens}`
-                
+                 
                 
                 itens.push({
                     empresa,
                     numeroNF: nfFormatado,
                     serie: serieFormatado,
                     dataEntrega,
-                    tipoEtiqueta,
+                    tipoEtiqueta: this.formataEtiqueta(tipoEtiqueta, i + 1),
                     item: item.padEnd(21, ' '),
                     descricao,
                     quantidade: qtdNaEmbalagem.toFixed(3),
@@ -461,6 +461,28 @@
                 atualizarTabela();
             }
         }
+
+        function formataEtiqueta(etiqueta, valor){
+            console.log("FormataEtiqueta-> Etiqueta recebida: " +  etiqueta);
+            console.log("FormataEtiqueta -> ValorRecebido: " + valor)
+
+            const limpa = etiqueta.trim().toUpperCase() + valor;
+  
+            const regex = /^([A-Z]{2})(\d+)$/;
+            const match = limpa.match(regex);           
+            
+            const letras = match[1];
+            const numeros = match[2];
+  
+            // Pega apenas os primeiros 6 dígitos ou completa com zeros
+            const numerosFormatados = numeros.slice(0, 6).padStart(6, '0');
+
+            const etiquetaFormatada = letras + numerosFormatados;
+
+            return etiquetaFormatada;
+            
+        }
+
 
         function gerarCSV() {
             if (itens.length === 0) {
