@@ -347,15 +347,16 @@
             for (let i = 0; i < numEmbalagens; i++) {
                 const qtdNaEmbalagem = Math.min(qtdEmbalagem, quantidadeRestante);
 
-                 volume =  ` ${i+1} / ${numEmbalagens}`
-                 
+                 volume =  ` ${i+1} / ${numEmbalagens}`;
+                 let tipoEtiquetaFormatada = formataEtiqueta(tipoEtiqueta, i + 1);
+                
                 
                 itens.push({
                     empresa,
                     numeroNF: nfFormatado,
                     serie: serieFormatado,
                     dataEntrega,
-                    tipoEtiqueta: this.formataEtiqueta(tipoEtiqueta, i + 1),
+                    tipoEtiquetaFormatada,
                     item: item.padEnd(21, ' '),
                     descricao,
                     quantidade: qtdNaEmbalagem.toFixed(3),
@@ -404,7 +405,7 @@
                     <td>${"0"+item.quantidade}</td>
                     <td>${item.unidadeMedida}</td>
                     <td>${item.embalagem}</td>
-                    <td>${item.tipoEtiqueta}</td>
+                    <td>${item.tipoEtiquetaFormatada}</td>
                     <td>${item.volume}</td>
                     <td>
                         <button class="btn btn-sm btn-danger" onclick="removerItem(${index})">
@@ -425,7 +426,7 @@
                     <td>${item.quantidade}</td>
                     <td>${item.unidadeMedida}</td>
                     <td>${item.embalagem}</td>
-                    <td>${item.tipoEtiqueta}</td>
+                    <td>${item.tipoEtiquetaFormatada}</td>
                     <td>${item.volume}</td>
                     <td>
                         <button class="btn btn-sm btn-danger" onclick="removerItem(${index})">
