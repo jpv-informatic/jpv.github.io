@@ -495,7 +495,9 @@
         }
 
         function formataQuantidade(valor){
-            return valor.replace(".", "");
+            let formatado = valor.toString().padStart(10, '0');
+            valor = formatado.replace(".", ""); 
+            return valor; 
         }
 
 
