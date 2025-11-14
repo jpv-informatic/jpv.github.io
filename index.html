@@ -330,7 +330,8 @@
 
             const numEmbalagens = Math.ceil(quantidadeTotal / qtdEmbalagem);
             let quantidadeRestante = quantidadeTotal;
-            let volume = "Palett";
+            let volume = "Palete";
+            
             
              itens.push({
                     empresa,
@@ -340,7 +341,7 @@
                     tipoEtiqueta,
                     item: item.padEnd(21, ' '),
                     descricao,
-                    quantidade: quantidadeTotal.toFixed(3),
+                    quantidade: quantidadeTotal,
                     unidadeMedida: unidadeMedida.padEnd(2, ' '),
                     embalagem,
                     fornecedor,
@@ -358,7 +359,7 @@
 
                  volume =  ` ${i+1} / ${numEmbalagens}`;
                  let tipoEtiquetaFormatada = formataEtiqueta(tipoEtiqueta, i + 1);
-                
+                 let quantidadeFormatada = formatarQuantidade(qtdNaEmbalagem.toFixed(3);
                 
                 itens.push({
                     empresa,
@@ -368,7 +369,7 @@
                     tipoEtiquetaFormatada,
                     item: item.padEnd(21, ' '),
                     descricao,
-                    quantidade: qtdNaEmbalagem.toFixed(3),
+                    quantidade: quantidadeFormatada,
                     unidadeMedida: unidadeMedida.padEnd(2, ' '),
                     embalagem,
                     fornecedor,
@@ -491,6 +492,10 @@
 
             return etiquetaFormatada;
             
+        }
+
+        function formataQuantidade(valor){
+            return valor.replace(".", "");
         }
 
 
