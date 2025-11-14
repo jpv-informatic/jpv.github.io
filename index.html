@@ -341,7 +341,8 @@
                     tipoEtiqueta,
                     item: item.padEnd(21, ' '),
                     descricao,
-                    quantidade: quantidadeTotalFormatada,
+                    quantidadeFormatada: quantidadeTotalFormatada,
+                    quantidade: quantidadeTotal,
                     unidadeMedida: unidadeMedida.padEnd(2, ' '),
                     embalagem,
                     fornecedor,
@@ -369,7 +370,8 @@
                     tipoEtiquetaFormatada,
                     item: item.padEnd(21, ' '),
                     descricao,
-                    quantidade: quantidadeFormatada,
+                    quantidadeFormatada: quantidadeFormatada,
+                    quantidade: qtNaEmbalagem,
                     unidadeMedida: unidadeMedida.padEnd(2, ' '),
                     embalagem,
                     fornecedor,
@@ -507,10 +509,10 @@
                 return;
             }
 
-            let csv = 'Empresa,Nota Fiscal,Série,Data Entrega,Tipo Etiqueta,Item,Descrição,Quantidade,Unidade Medida,Embalagem,Fornecedor,Destino,Informações Adicionais,Volume\n';
+            let csv = 'Empresa,Nota Fiscal,Serie,Data Entrega,Tipo Etiqueta,Item,Descrição,QuantidadeFormatada,Quantidade,Unidade Medida,Embalagem,Fornecedor,Destino,Informações Adicionais,Volume\n';
 
             itens.forEach(item => {
-                csv += `"${item.empresa}","${item.numeroNF}","${item.serie}","${item.dataEntrega}","${item.tipoEtiquetaFormatada}","${item.item}","${item.descricao}","${item.quantidade}","${item.unidadeMedida}","${item.embalagem}","${item.fornecedor}","${item.destino}","${item.infoAdicionais}", "${item.volume}"\n`;
+                csv += `"${item.empresa}","${item.numeroNF}","${item.serie}","${item.dataEntrega}","${item.tipoEtiquetaFormatada}","${item.item}","${item.descricao}","${item.quantidadeFormatada}","${item.quantidade}","${item.unidadeMedida}","${item.embalagem}","${item.fornecedor}","${item.destino}","${item.infoAdicionais}", "${item.volume}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
