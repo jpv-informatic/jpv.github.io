@@ -516,7 +516,7 @@
             const url = URL.createObjectURL(blob);
             
             link.setAttribute('href', url);
-            link.setAttribute('download', `etiquetas_${Date.now()}.csv`);
+            link.setAttribute('download', `etiquetas.csv`);
             link.style.visibility = 'hidden';
             
             document.body.appendChild(link);
