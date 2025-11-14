@@ -331,7 +331,7 @@
             const numEmbalagens = Math.ceil(quantidadeTotal / qtdEmbalagem);
             let quantidadeRestante = quantidadeTotal;
             let volume = "Palete";
-            
+            let quantidadeTotalFormatada = formataQuantidade(quantidadeTotal.toFixed(3));
             
              itens.push({
                     empresa,
@@ -341,7 +341,7 @@
                     tipoEtiqueta,
                     item: item.padEnd(21, ' '),
                     descricao,
-                    quantidade: quantidadeTotal,
+                    quantidade: quantidadeTotalFormatada,
                     unidadeMedida: unidadeMedida.padEnd(2, ' '),
                     embalagem,
                     fornecedor,
@@ -495,7 +495,7 @@
         }
 
         function formataQuantidade(valor){
-            let formatado = valor.toString().padStart(10, '0');
+            let formatado = valor.toString().padStart(13, '0');
             valor = formatado.replace(".", ""); 
             return valor; 
         }
